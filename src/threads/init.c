@@ -134,6 +134,23 @@ pintos_init (void)
     run_actions (argv);
   } else {
     // TODO: no command line passed to kernel. Run interactively 
+    while (true) {
+       char input[50] = "";
+       uint8_t c;
+       printf("ICS143A>");
+       while ((c = input_getc()) != 13 /* newline */) {
+           printf("%c", c);
+           int len = strlen(input);
+           input[len] = c;
+           input[len+1] = '\0';
+       }
+       printf("\n"); // newline
+       if (strcmp(input, "whoami") == 0) {
+          printf("pturpanj\n");
+       } else if (strcmp(input, "exit") == 0) {
+          break;
+       }
+    }
   }
 
   /* Finish up. */

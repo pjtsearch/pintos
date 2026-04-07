@@ -1,0 +1,58 @@
+			+-------------------------+
+			|      CompSci 143A       |
+			| PROJECT 0: Getting Real |
+			|     DESIGN DOCUMENT     |
+			+-------------------------+
+				   
+---- AUTHOR ----
+
+>> Fill in your name and email address.
+
+Peter Turpanjian <pturpanj@uci.edu>
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, or notes for the
+>> TAs, please give them here.
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+https://stackoverflow.com/a/2603069
+https://stackoverflow.com/a/12939440
+
+			     Booting Pintos
+			     ==============
+
+---- QUESTIONS ---- 
+>> Put the screenshots of Pintos running in src/p0.
+>> A1: Is there any particular issue that you would like us to know?
+
+No.
+
+			     Kernel Monitor
+			     ==============
+
+---- DATA STRUCTURES ----
+
+>> C1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+None.
+
+---- ALGORITHMS ----
+>> C2: Explain how you read and write to the console for the kernel monitor.
+
+To read from the console, I used input_getc, which is defined in
+devices/input.h and returns the ASCII code of a single character taken from
+stdin. I run input_getc in a loop, accumulating the characters in a buffer and
+also copying them to stdout until the user types a return, and then it will
+interpret the command that is in the buffer. For all writing to the console, I
+used printf, which is defined in lib/stdio.h and works the same way as the
+standard libc one does.
+
+>> C3: Any additional enhancement you implement?
+
+No.
