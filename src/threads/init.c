@@ -149,6 +149,8 @@ pintos_init (void)
           printf("pturpanj\n");
        } else if (strcmp(input, "exit") == 0) {
           break;
+       } else {
+          printf("invalid command\n");
        }
     }
   }
