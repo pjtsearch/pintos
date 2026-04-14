@@ -138,7 +138,7 @@ pintos_init (void)
        char input[50] = "";
        uint8_t c;
        printf("ICS143A>");
-       while ((c = input_getc()) != 13 /* newline */) {
+       while ((c = input_getc()) != 13 /* LF */ && c != 10 /* CR */) {
            printf("%c", c);
            int len = strlen(input);
            input[len] = c;
