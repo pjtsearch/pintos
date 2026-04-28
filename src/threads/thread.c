@@ -61,6 +61,9 @@ bool thread_mlfqs;
 
 static void kernel_thread (thread_func *, void *aux);
 
+static bool ready_list_less_func (const struct list_elem *a,
+                                  const struct list_elem *b,
+                                  void *aux UNUSED);
 static void idle (void *aux UNUSED);
 static struct thread *running_thread (void);
 static struct thread *next_thread_to_run (void);
@@ -200,8 +203,19 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
-
   return tid;
+}
+
+/* Compares the priorities of two ready_list elements A and B.
+   Returns true if the priority of A is less than that of B, or
+   false if the priority of A is greater than or equal to that of B. */
+bool ready_list_less_func (const struct list_elem *a,
+                             const struct list_elem *b,
+                             void *aux UNUSED)
+{
+  int a_prio = list_entry (a, struct thread, elem)->priority;
+  int b_prio = list_entry (b, struct thread, elem)->priority;
+  return a_prio < b_prio;
 }
 
 /* Puts the current thread to sleep.  It will not be scheduled
@@ -237,7 +251,7 @@ thread_unblock (struct thread *t)
 
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  list_push_back (&ready_list, &t->elem);
+  list_insert_ordered (&ready_list, &t->elem, &ready_list_less_func, NULL);
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -308,7 +322,7 @@ thread_yield (void)
 
   old_level = intr_disable ();
   if (cur != idle_thread) 
-    list_push_back (&ready_list, &cur->elem);
+    list_insert_ordered (&ready_list, &cur->elem, &ready_list_less_func, NULL);
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
